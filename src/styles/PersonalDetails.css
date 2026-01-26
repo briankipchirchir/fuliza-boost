@@ -172,6 +172,49 @@ background: linear-gradient(90deg, #22c55e, #16a34a);
   opacity: 0.6;
 }
 
+
+/* ===== NOTIFICATION OVERLAY ===== */
+.notification-overlay {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.notification-overlay.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.notification-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.notification-content strong {
+  color: #1a1a1a;
+}
+
+.notification-time {
+  color: #666;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+
 /* SECURE TEXT */
 .secure-text {
   font-size: 11px;
